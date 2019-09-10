@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashSet;
+
 public class MainActivity extends AppCompatActivity {
 
     int activePlayer = 0;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
             {0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}
     };
     boolean isGameActive = true;
+    HashSet<Boolean> cellsFilled = new HashSet<Boolean>();
+    int clikedCounter = 0;
 
     public void onboardClick(View view){
 
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.x);
                 imageView.animate().rotation(720).translationYBy(1000).setDuration(500);
                 activePlayer = 1;
+                clikedCounter+=1;
 
             } else {
                 gameState[tag]=1;
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.o);
                 imageView.animate().rotation(720).translationYBy(1000).setDuration(500);
                 activePlayer = 0;
-
+                clikedCounter+=1;
             }
         }
 
@@ -59,6 +64,18 @@ public class MainActivity extends AppCompatActivity {
                 isGameActive = false;
             }
         }
+
+
+
+
+        if(clikedCounter==9){
+            TextView winnerTextView = (TextView) findViewById(R.id.winnerText);
+            winnerTextView.setText("Match Drawn!");
+            winnerTextView.setVisibility(View.VISIBLE);
+            findViewById(R.id.playAgainButton).setVisibility(View.VISIBLE);
+            clikedCounter=0;
+        }
+
     }
 
 
@@ -79,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         isGameActive = true;
+
+        clikedCounter = 0;
     }
 
     @Override
