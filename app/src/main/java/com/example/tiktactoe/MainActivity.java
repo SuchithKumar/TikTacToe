@@ -3,9 +3,11 @@ package com.example.tiktactoe;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,8 +24,15 @@ public class MainActivity extends AppCompatActivity {
     boolean isGameActive = true;
     HashSet<Boolean> cellsFilled = new HashSet<Boolean>();
     int clikedCounter = 0;
+//    MediaPlayer bgmPlayer ;
+    MediaPlayer gameProgressPlayer;
+
 
     public void onboardClick(View view){
+
+        gameProgressPlayer = MediaPlayer.create(this,R.raw.buttonclick);
+        gameProgressPlayer.start();
+//        gameProgressPlayer.stop();
 
         ImageView imageView = (ImageView) view;
         int tag = Integer.parseInt(imageView.getTag().toString());
@@ -33,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 gameState[tag]=0;
                 imageView.setTranslationY(-1000);
                 imageView.setImageResource(R.drawable.x);
-                imageView.animate().rotation(720).translationYBy(1000).setDuration(500);
+                imageView.animate().rotation(720).translationYBy(1000).setDuration(100);
                 activePlayer = 1;
                 clikedCounter+=1;
 
@@ -41,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 gameState[tag]=1;
                 imageView.setTranslationY(-1000);
                 imageView.setImageResource(R.drawable.o);
-                imageView.animate().rotation(720).translationYBy(1000).setDuration(500);
+                imageView.animate().rotation(720).translationYBy(1000).setDuration(100);
                 activePlayer = 0;
                 clikedCounter+=1;
             }
@@ -55,11 +64,17 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.playAgainButton).setVisibility(View.VISIBLE);
 
                 if (activePlayer == 0) {
+                    gameProgressPlayer = MediaPlayer.create(this,R.raw.end);
+                    gameProgressPlayer.start();
                     winnerTextView.setText("Winner is O");
                     Toast.makeText(this, "O won!", Toast.LENGTH_SHORT).show();
+//                    gameProgressPlayer.stop();
                 } else {
+                    gameProgressPlayer = MediaPlayer.create(this,R.raw.end);
+                    gameProgressPlayer.start();
                     winnerTextView.setText("Winner is X");
                     Toast.makeText(this, "X won!", Toast.LENGTH_SHORT).show();
+//                    gameProgressPlayer.stop();
                 }
                 isGameActive = false;
             }
@@ -74,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
             winnerTextView.setVisibility(View.VISIBLE);
             findViewById(R.id.playAgainButton).setVisibility(View.VISIBLE);
             clikedCounter=0;
+
+            gameProgressPlayer = MediaPlayer.create(this,R.raw.end);
+            gameProgressPlayer.start();
         }
 
     }
@@ -104,5 +122,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+
     }
 }
